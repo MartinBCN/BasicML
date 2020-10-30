@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from src.models.logistic_regression import LogReg
+from src.classification.logistic_regression import LogReg
 
 
 class TestStringMethods(unittest.TestCase):
