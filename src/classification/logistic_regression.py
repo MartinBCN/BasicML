@@ -2,8 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from src.classification.classification_base import BaseClassification
-from src.utils.activation import softmax, cross_entropy
-from src.utils.scoring import classification_rate
+from src.utils.activation import softmax
 
 np.set_printoptions(linewidth=10000)
 import logging
@@ -13,25 +12,20 @@ logger = logging.getLogger()
 
 class LogReg(BaseClassification):
 
-    def __init__(self, epochs=10000, learning_rate=0.00001):
-        super(BaseClassification, self).__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         # Weights
         self.W = None
         self.b = None
 
-        # Hyper Parameter
-        self.epochs = epochs
-        self.learning_rate = learning_rate
-        self.reg = 0.000001
+    def _initialize_weights(self, feature_vector: np.array, target: np.array) -> None:
 
-    def _initialize_weights(self, X: np.array, Y: np.array) -> None:
+        n, k = feature_vector.shape
+        n_target, classes = target.shape
+        assert n == n_target
 
-        N, DX = X.shape
-        N_Y, DY = Y.shape
-        assert N == N_Y
-
-        self.W = np.random.randn(DX, DY).astype(np.float32) / np.sqrt(DX + DY)
-        self.b = np.zeros(DY).astype(np.float32)
+        self.W = np.random.randn(k, classes).astype(np.float32) / np.sqrt(k + classes)
+        self.b = np.zeros(classes).astype(np.float32)
 
     def _forward(self, X):
         A1 = X.dot(self.W)

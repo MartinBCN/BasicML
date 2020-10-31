@@ -12,9 +12,8 @@ def main():
     x, y = load_mnist(data_dir, kind='train')
     x = x / 255
 
-    y_one_hot = one_hot(y)
-    lr = LogReg(epochs=100)
-    lr.fit(x, y_one_hot)
+    lr = LogReg(epochs=10, batch_size=10, learning_rate=0.0001)
+    lr.fit(x, y)
     lr.plot()
 
 
