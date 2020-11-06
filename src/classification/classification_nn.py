@@ -63,7 +63,7 @@ class ClassificationNN(BaseClassification):
         self.W2 += self.momentum_W2
         self.b2 += self.momentum_b2
 
-    def _backpropagation(self, feature_batch: np.array, target_batch: np.array):
+    def step(self, feature_batch: np.array, target_batch: np.array):
         prediction, Z = self._forward(feature_batch)
         self._backward(feature_batch, target_batch, prediction, Z)
         batch_loss = cross_entropy(target_batch, prediction)

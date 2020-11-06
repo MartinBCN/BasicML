@@ -80,7 +80,7 @@ class BaseClassification(ABC):
         return result
 
     @abstractmethod
-    def _backpropagation(self, feature_batch: np.array, target_batch: np.array):
+    def step(self, feature_batch: np.array, target_batch: np.array):
         """
 
         Parameters

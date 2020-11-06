@@ -36,7 +36,7 @@ class LogReg(BaseClassification):
         self.W += self.learning_rate * (self._derivative_W(X, T, Y) + self.reg * self.W)
         self.b += self.learning_rate * (self._derivative_b(T, Y) + self.reg * self.b)
 
-    def _backpropagation(self, feature_batch: np.array, target_batch: np.array):
+    def step(self, feature_batch: np.array, target_batch: np.array):
         prediction = self._forward(feature_batch)
         self._backward(feature_batch, target_batch, prediction)
         batch_loss = cross_entropy(target_batch, prediction)
