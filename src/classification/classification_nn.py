@@ -2,7 +2,7 @@ from src.classification.classification_base import BaseClassification
 
 import numpy as np
 
-from src.utils.activation import relu, softmax
+from src.utils.activation import relu, softmax, cross_entropy
 
 
 class ClassificationNN(BaseClassification):
@@ -50,7 +50,7 @@ class ClassificationNN(BaseClassification):
         dW2 = self.derivative_W2(T, Y, Z)
         db2 = self.derivative_b2(T, Y)
 
-        eta = self.initial_learning_rate
+        eta = self.learning_rate
 
         eps = 10 ** -9
         self.momentum_W1 = self.velocity * self.momentum_W1 + (dW1 + self.reg * self.W1) * eta
@@ -62,6 +62,13 @@ class ClassificationNN(BaseClassification):
         self.b1 += self.momentum_b1
         self.W2 += self.momentum_W2
         self.b2 += self.momentum_b2
+
+    def _backpropagation(self, feature_batch: np.array, target_batch: np.array):
+        prediction, Z = self._forward(feature_batch)
+        self._backward(feature_batch, target_batch, prediction, Z)
+        batch_loss = cross_entropy(target_batch, prediction)
+
+        return prediction, batch_loss
 
     def derivative_W1(self, X, T, Y, Z):
         eps = T - Y
